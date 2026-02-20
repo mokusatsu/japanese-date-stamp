@@ -103,3 +103,11 @@
     - `npm run build`（成功）
     - `find deploy -maxdepth 3 -type f | sort`（成功）
     - `git status --short`
+
+- 2026-02-20 | Task: T-009 デプロイ手順書（DEPLOY.md）整備
+  - 概要: `DEPLOY.md` を新規作成し、`npm ci` → `npm run build` → `deploy/` 配置 → 確認までの再現可能なデプロイ手順と継続運用ルールを文書化。
+  - 確認コマンド:
+    - `cat DEPLOY.md`（成功）
+    - `npm run build`（成功）
+    - `find deploy -maxdepth 3 -type f | sort`（成功）
+    - `git status --short`

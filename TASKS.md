@@ -336,3 +336,33 @@
   - WORKLOG.md に本タスクの実施記録が追記されている。
 - notes:
   - `npm run build` で生成した `dist/` の内容を `deploy/` にコピーし、`index.html` と `assets` 一式を配置した。
+
+## T-009: デプロイ手順書（DEPLOY.md）整備
+- status: done
+- priority: medium
+- depends_on:
+  - T-008
+- scope:
+  - DEPLOY.md
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 3.1 アーキテクチャ
+  - SPEC.md 7.14
+- goal: TSトランスパイル〜`deploy/` 配置までの手順を文書化し、今後も同じ手順で再実行できるようにする。
+- steps:
+  1. デプロイ前提条件と実行コマンド（`npm ci` / `npm run build` / `cp`）を整理する。
+  2. `deploy/` 配置確認方法と期待成果物を明記する。
+  3. GitHub Pages自動デプロイとの関係と継続運用ルールを追記する。
+- acceptance_criteria:
+  - `DEPLOY.md` に再現可能な手順が記載されている。
+  - `deploy/` 生成・確認のための具体的なコマンドが含まれている。
+- checks:
+  - `cat DEPLOY.md`（成功）
+  - `npm run build`（成功）
+  - `find deploy -maxdepth 3 -type f | sort`（成功）
+- definition_of_done:
+  - 後続エージェント/開発者が `DEPLOY.md` のみで同様のデプロイ作業を再現できる。
+  - WORKLOG.md に作業記録が追記されている。
+- notes:
+  - `DEPLOY.md` を新規作成し、依存導入→本番ビルド→`deploy/` 配置→確認の標準手順を記載した。
