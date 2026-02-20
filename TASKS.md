@@ -60,7 +60,7 @@
   - checks実行結果: `npm run build` 成功 / `npm run lint` 成功。
 
 ## T-002: Canvas印影レンダリングエンジン実装
-- status: todo
+- status: done
 - priority: high
 - depends_on:
   - T-001
@@ -88,7 +88,11 @@
 - definition_of_done:
   - 描画ロジックが関数分離され、UIイベントから再利用可能である。
 - notes:
-  - 
+  - Canvas描画エンジンを `src/stamp/drawStamp.ts` と `src/stamp/layout.ts` に分離実装し、外周円・内部2本線・3領域テキストを描画可能にした。
+  - `src/main.ts` で入力フォーム（上段/日付/下段/書体/色/線幅）イベントを再描画処理に接続し、入力変更時の即時プレビュー更新を実装した。
+  - checks実行結果: `npm run test -- drawStamp` 成功 / `npm run build` 成功。
+  - フィードバック対応として `reference-layout.svg` の座標・二重円構造（外周r142/内周r128）・横線位置（y=100/200）・文字位置（y=70/150/240）へ描画基準を一致させた。
+  - 追加修正として線ストローク太さを `reference-layout.svg` の仕様（外周2倍・内周/横線同一、既定3px）に一致させ、初期テキストを上枠「田中」/下枠「一郎」へ変更。HTML言語指定を `ja-JP` へ修正し日本語グリフ優先フォントを適用した。
 
 ## T-003: 日付フォーマット（和暦/西暦・区切り）実装
 - status: todo

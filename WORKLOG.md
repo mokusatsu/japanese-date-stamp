@@ -20,3 +20,27 @@
     - `npm run lint`（成功）
     - `git status --short`
 
+
+- 2026-02-20 | Task: T-002 Canvas印影レンダリングエンジン実装
+  - 概要: `src/stamp/layout.ts` に印影レイアウト計算を実装し、`src/stamp/drawStamp.ts` で外周円・内部2本線・3領域テキスト描画を関数化。`src/main.ts` からフォーム入力イベントで再描画を呼び出し、即時プレビュー更新を実装。`src/stamp/drawStamp.test.ts` を追加して描画呼び出しとレイアウト算出を検証。`TESTS.md` に実行チェックと回帰テストケースを追記。
+  - 確認コマンド:
+    - `npm run test -- drawStamp`（成功）
+    - `npm run build`（成功）
+    - `npm run lint`（成功）
+    - `git status --short`
+
+- 2026-02-20 | Task: T-002 フィードバック対応（reference-layout.svg一致化）
+  - 概要: `src/stamp/layout.ts` と `src/stamp/drawStamp.ts` を更新し、`reference-layout.svg` と同一の座標系（300基準）・外周太線/内周細線/横線2本/テキスト基準位置で描画するよう補正。`src/stamp/drawStamp.test.ts` を一致仕様に合わせて更新し、位置と半径を固定値検証。`src/main.ts` のcanvasサイズを300x300へ調整。`TESTS.md` に一致性回帰ケースを追記。
+  - 確認コマンド:
+    - `npm run test -- drawStamp`（成功）
+    - `npm run build`（成功）
+    - `npm run lint`（成功）
+    - `git status --short`
+
+- 2026-02-20 | Task: T-002 フィードバック対応（ストローク太さ・日本語グリフ修正）
+  - 概要: `src/stamp/drawStamp.ts` の線幅計算を `reference-layout.svg` と同じ外周2倍/内周・横線同一へ調整し、フォントスタックを日本語優先（Noto/Hiragino/Yu）へ更新。`index.html` の `lang` を `ja-JP` と `Content-Language` に修正し、`src/main.ts` の初期テキストを上枠「田中」・下枠「一郎」に変更。`TESTS.md` に回帰ケースを追記。
+  - 確認コマンド:
+    - `npm run test -- drawStamp`（成功）
+    - `npm run build`（成功）
+    - `npm run lint`（成功）
+    - `git status --short`
