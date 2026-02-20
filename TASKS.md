@@ -304,3 +304,65 @@
   - `docs/manual-test.md` を新規追加し、入力〜出力〜履歴〜非機能（外部通信なし/互換性/体感性能）の手動検証観点を整備。
   - `README.md` に利用手順・検証コマンド・非機能要件（外部通信なし、LocalStorage保存、モダンブラウザ互換）を追記。
   - `src/main.ts` で `reference-layout.svg` の参照パスを `import.meta.env.BASE_URL` ベースへ変更し、サブパス配信互換性を改善。
+
+## T-008: TSトランスパイル成果物のdeploy格納
+- status: done
+- priority: medium
+- depends_on:
+  - T-007
+- scope:
+  - deploy/index.html
+  - deploy/assets/index-D-qT16_r.css
+  - deploy/assets/index-aS-u9P7c.js
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 3.1 アーキテクチャ
+  - SPEC.md 7.14
+- goal: TypeScriptをトランスパイルした本番ビルド成果物を `deploy/` 配下へ格納し、配布可能な状態にする。
+- steps:
+  1. 依存関係をインストールしてビルド可能状態にする。
+  2. `npm run build` でTypeScriptを含むアプリを本番ビルドする。
+  3. `dist/` の成果物を `deploy/` へコピーする。
+- acceptance_criteria:
+  - `deploy/` 配下に `index.html` と `assets/*` が配置されている。
+  - ビルドコマンドが成功している。
+- checks:
+  - `npm ci`（成功）
+  - `npm run build`（成功）
+  - `find deploy -maxdepth 3 -type f | sort`（成功）
+- definition_of_done:
+  - 最新ビルド成果物が `deploy/` に格納され、配布用ディレクトリとして参照できる。
+  - WORKLOG.md に本タスクの実施記録が追記されている。
+- notes:
+  - `npm run build` で生成した `dist/` の内容を `deploy/` にコピーし、`index.html` と `assets` 一式を配置した。
+
+## T-009: デプロイ手順書（DEPLOY.md）整備
+- status: done
+- priority: medium
+- depends_on:
+  - T-008
+- scope:
+  - DEPLOY.md
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 3.1 アーキテクチャ
+  - SPEC.md 7.14
+- goal: TSトランスパイル〜`deploy/` 配置までの手順を文書化し、今後も同じ手順で再実行できるようにする。
+- steps:
+  1. デプロイ前提条件と実行コマンド（`npm ci` / `npm run build` / `cp`）を整理する。
+  2. `deploy/` 配置確認方法と期待成果物を明記する。
+  3. GitHub Pages自動デプロイとの関係と継続運用ルールを追記する。
+- acceptance_criteria:
+  - `DEPLOY.md` に再現可能な手順が記載されている。
+  - `deploy/` 生成・確認のための具体的なコマンドが含まれている。
+- checks:
+  - `cat DEPLOY.md`（成功）
+  - `npm run build`（成功）
+  - `find deploy -maxdepth 3 -type f | sort`（成功）
+- definition_of_done:
+  - 後続エージェント/開発者が `DEPLOY.md` のみで同様のデプロイ作業を再現できる。
+  - WORKLOG.md に作業記録が追記されている。
+- notes:
+  - `DEPLOY.md` を新規作成し、依存導入→本番ビルド→`deploy/` 配置→確認の標準手順を記載した。
