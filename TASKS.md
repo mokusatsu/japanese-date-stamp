@@ -366,3 +366,41 @@
   - WORKLOG.md に作業記録が追記されている。
 - notes:
   - `DEPLOY.md` を新規作成し、依存導入→本番ビルド→`deploy/` 配置→確認の標準手順を記載した。
+
+## T-010: deployサブパス参照時のアセット解決不具合修正
+- status: done
+- priority: high
+- depends_on:
+  - T-009
+- scope:
+  - vite.config.ts
+  - deploy/index.html
+  - deploy/assets/index-CmspDszf.js
+  - deploy/assets/index-aS-u9P7c.js
+  - DEPLOY.md
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 3.1 アーキテクチャ
+  - SPEC.md 7.1
+  - SPEC.md 7.14
+- goal: `https://mokusatsu.github.io/japanese-date-stamp/deploy/` のようなサブパス配信でもSPAが正常レンダリングされるようにする。
+- steps:
+  1. `base` 設定をサブパス配信互換な相対パスへ変更する。
+  2. 本番ビルドを再生成し、`deploy/` 配下へ反映する。
+  3. ドキュメントと作業ログへ反映内容・確認結果を記録する。
+- acceptance_criteria:
+  - `deploy/index.html` のCSS/JS参照が相対パス（`./assets/...`）になっている。
+  - `npm run build` が成功する。
+  - ドキュメントにサブパス配信時の挙動が追記されている。
+- checks:
+  - `npm run build`（成功）
+  - `cat deploy/index.html`（成功: `./assets/...` を確認）
+  - `cat DEPLOY.md`（成功）
+- definition_of_done:
+  - deployサブパス公開URLでレンダリング不能にならない成果物が `deploy/` に配置されている。
+  - TASKS.md / WORKLOG.md に実施内容と確認結果が追記されている。
+- notes:
+  - `vite.config.ts` の `base` を `"./"` に変更し、配信パス非依存でアセット解決できるようにした。
+  - `npm run build` 後に `deploy/` を更新し、`deploy/index.html` が `./assets/*` を参照することを確認した。
+  - `DEPLOY.md` に相対 `base` 採用理由（`/`直下・サブディレクトリ双方での互換性）を追記した。
