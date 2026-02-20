@@ -85,9 +85,9 @@ export const createStampSvg = (options: Omit<SvgExportOptions, 'fileName' | 'tri
   <circle cx="${layout.centerX}" cy="${layout.centerY}" r="${layout.innerRadius}" fill="none" stroke="${options.strokeColor}" stroke-width="${options.strokeWidth}" />
   <line x1="${layout.lineStartX}" y1="${layout.topLineY}" x2="${layout.lineEndX}" y2="${layout.topLineY}" stroke="${options.strokeColor}" stroke-width="${options.strokeWidth}" stroke-linecap="round" />
   <line x1="${layout.lineStartX}" y1="${layout.bottomLineY}" x2="${layout.lineEndX}" y2="${layout.bottomLineY}" stroke="${options.strokeColor}" stroke-width="${options.strokeWidth}" stroke-linecap="round" />
-  <text x="${layout.centerX}" y="${layout.topTextY}" fill="${options.textColor}" text-anchor="middle" dominant-baseline="middle" font-size="${Math.round(topFontSize)}" font-family="${fontFamily}">${escapeXmlText(options.topText)}</text>
-  <text x="${layout.centerX}" y="${layout.middleTextY}" fill="${options.textColor}" text-anchor="middle" dominant-baseline="middle" font-size="${Math.round(dateFontSize)}" font-family="${fontFamily}">${escapeXmlText(options.dateText)}</text>
-  <text x="${layout.centerX}" y="${layout.bottomTextY}" fill="${options.textColor}" text-anchor="middle" dominant-baseline="middle" font-size="${Math.round(bottomFontSize)}" font-family="${fontFamily}">${escapeXmlText(options.bottomText)}</text>
+  <text x="${layout.centerX}" y="${layout.topTextY}" fill="${options.textColor}" text-anchor="middle" dominant-baseline="middle" font-size="${Math.round(topFontSize)}" font-family='${fontFamily}'>${escapeXmlText(options.topText)}</text>
+  <text x="${layout.centerX}" y="${layout.middleTextY}" fill="${options.textColor}" text-anchor="middle" dominant-baseline="middle" font-size="${Math.round(dateFontSize)}" font-family='${fontFamily}'>${escapeXmlText(options.dateText)}</text>
+  <text x="${layout.centerX}" y="${layout.bottomTextY}" fill="${options.textColor}" text-anchor="middle" dominant-baseline="middle" font-size="${Math.round(bottomFontSize)}" font-family='${fontFamily}'>${escapeXmlText(options.bottomText)}</text>
 </svg>`;
 };
 
