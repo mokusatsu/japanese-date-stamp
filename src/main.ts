@@ -54,13 +54,17 @@ app.innerHTML = `
           </div>
         </div>
 
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div class="grid gap-4 sm:grid-cols-3">
           <div>
             <label class="input-label" for="fontFamily">書体</label>
             <select class="input-control" id="fontFamily">
               <option value="mincho" selected>明朝体</option>
               <option value="gothic">ゴシック体</option>
             </select>
+          </div>
+          <div>
+            <label class="input-label" for="textScale">文字サイズ倍率</label>
+            <input class="input-control" id="textScale" type="number" min="0.5" max="2" step="0.1" value="1" />
           </div>
           <div>
             <label class="input-label" for="textColor">テキスト色</label>
@@ -123,6 +127,7 @@ const bottomTextInput = document.querySelector<HTMLInputElement>('#bottomText');
 const eraFormatSelect = document.querySelector<HTMLSelectElement>('#eraFormat');
 const dateSeparatorInput = document.querySelector<HTMLInputElement>('#dateSeparator');
 const fontFamilySelect = document.querySelector<HTMLSelectElement>('#fontFamily');
+const textScaleInput = document.querySelector<HTMLInputElement>('#textScale');
 const textColorInput = document.querySelector<HTMLInputElement>('#textColor');
 const strokeColorInput = document.querySelector<HTMLInputElement>('#strokeColor');
 const strokeWidthInput = document.querySelector<HTMLInputElement>('#strokeWidth');
@@ -135,6 +140,7 @@ if (
   !eraFormatSelect ||
   !dateSeparatorInput ||
   !fontFamilySelect ||
+  !textScaleInput ||
   !textColorInput ||
   !strokeColorInput ||
   !strokeWidthInput ||
@@ -155,6 +161,7 @@ const render = (): void => {
     dateText: formatDateText(dateInput.value, eraFormatSelect.value as DateFormat, dateSeparatorInput.value),
     bottomText: bottomTextInput.value,
     fontFamily: fontFamilySelect.value as FontFamily,
+    textScale: Number(textScaleInput.value),
     textColor: textColorInput.value,
     strokeColor: strokeColorInput.value,
     strokeWidth: Number(strokeWidthInput.value),
@@ -168,6 +175,7 @@ const renderTargets: Array<HTMLInputElement | HTMLSelectElement> = [
   eraFormatSelect,
   dateSeparatorInput,
   fontFamilySelect,
+  textScaleInput,
   textColorInput,
   strokeColorInput,
   strokeWidthInput,

@@ -13,6 +13,7 @@ interface MockContext {
   moveTo: ReturnType<typeof vi.fn>;
   lineTo: ReturnType<typeof vi.fn>;
   fillText: ReturnType<typeof vi.fn>;
+  measureText: ReturnType<typeof vi.fn>;
   strokeStyle: string;
   fillStyle: string;
   lineWidth: number;
@@ -34,6 +35,7 @@ const createMockContext = (): CanvasRenderingContext2D => {
     moveTo: vi.fn(),
     lineTo: vi.fn(),
     fillText: vi.fn(),
+    measureText: vi.fn((text: string) => ({ width: text.length * 16 })),
     strokeStyle: '',
     fillStyle: '',
     lineWidth: 0,
@@ -78,6 +80,7 @@ describe('drawStamp', () => {
       strokeWidth: 3,
       textColor: '#ff0000',
       fontFamily: 'mincho',
+      textScale: 1,
     });
 
     expect(context.clearRect).toHaveBeenCalledWith(0, 0, 300, 300);

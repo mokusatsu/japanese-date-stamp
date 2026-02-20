@@ -158,7 +158,7 @@
   - `src/date/formatDate.test.ts` を追加し、元号境界・区切り文字適用・和暦/西暦の整形ロジックを検証。
 
 ## T-004: 書体・文字サイズ制御と枠線カスタマイズ実装
-- status: todo
+- status: done
 - priority: medium
 - depends_on:
   - T-002
@@ -182,12 +182,17 @@
   - 書体変更が全領域に一括反映される。
   - 枠線色/太さの変更がプレビューへ反映される。
 - checks:
-  - `npm run test -- textStyle`
-  - `npm run build`
+  - `npm run test -- textStyle`（成功）
+  - `npm run test -- drawStamp`（成功）
+  - `npm run build`（成功）
+  - `npm run lint`（成功）
+  - `rg -n "文字サイズ|書体|枠線太さ|枠線色|自動縮小|fitFontSizeToWidth|textScale|fontFamily|strokeWidth|strokeColor" SPEC.md src/main.ts src/stamp/drawStamp.ts src/stamp/textStyle.ts`（成功: 仕様突合せ）
 - definition_of_done:
   - 視認性を損なわない文字描画と枠線カスタマイズが実装されている。
 - notes:
-  - 
+  - `src/stamp/textStyle.ts` を新規追加し、書体解決・文字サイズ倍率クランプ・長文時の自動縮小ロジックを実装。
+  - `src/stamp/drawStamp.ts` で全領域の書体一括適用、文字サイズ倍率、横幅に応じた自動縮小、枠線色/太さの反映を統合。
+  - `src/main.ts` に文字サイズ倍率入力を追加し、既存の書体/枠線入力とあわせて即時プレビュー再描画に接続。
 
 ## T-005: PNG/SVGダウンロード機能と透過背景対応
 - status: todo
