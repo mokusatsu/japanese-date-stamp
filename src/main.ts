@@ -1,6 +1,13 @@
 import './styles.css';
 import { drawStamp, type FontFamily } from './stamp/drawStamp';
 import { formatDateText, type DateFormat } from './date/formatDate';
+import {
+  loadHistory,
+  saveHistory,
+  type StampFormState,
+  type StampHistoryEntry,
+} from './history/storage';
+import { renderHistoryList } from './history/historyList';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 
@@ -110,11 +117,10 @@ app.innerHTML = `
 
         <section class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
           <h2 class="text-lg font-semibold">履歴（最大10件）</h2>
-          <ul class="mt-3 space-y-2 text-sm" aria-label="履歴一覧">
-            <li class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2">2026/02/20 株式会社サンプル / 承認済</li>
-            <li class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2">2026/02/19 経理部 / 入金確認</li>
-            <li class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2">2026/02/18 人事部 / 面接済</li>
-          </ul>
+          <button id="saveHistoryButton" type="button" class="mt-3 rounded-md bg-slate-800 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-900">
+            現在の設定を履歴に保存
+          </button>
+          <ul id="historyList" class="mt-3 space-y-2 text-sm" aria-label="履歴一覧"></ul>
         </section>
       </div>
     </section>
@@ -131,6 +137,8 @@ const textScaleInput = document.querySelector<HTMLInputElement>('#textScale');
 const textColorInput = document.querySelector<HTMLInputElement>('#textColor');
 const strokeColorInput = document.querySelector<HTMLInputElement>('#strokeColor');
 const strokeWidthInput = document.querySelector<HTMLInputElement>('#strokeWidth');
+const historyListElement = document.querySelector<HTMLUListElement>('#historyList');
+const saveHistoryButton = document.querySelector<HTMLButtonElement>('#saveHistoryButton');
 const canvas = document.querySelector<HTMLCanvasElement>('#stampCanvas');
 
 if (
@@ -144,6 +152,8 @@ if (
   !textColorInput ||
   !strokeColorInput ||
   !strokeWidthInput ||
+  !historyListElement ||
+  !saveHistoryButton ||
   !canvas
 ) {
   throw new Error('Rendering controls not found');
@@ -155,16 +165,60 @@ if (!context) {
   throw new Error('Canvas 2D context not found');
 }
 
+const getFormState = (): StampFormState => ({
+  topText: topTextInput.value,
+  date: dateInput.value,
+  bottomText: bottomTextInput.value,
+  eraFormat: eraFormatSelect.value as DateFormat,
+  dateSeparator: dateSeparatorInput.value,
+  fontFamily: fontFamilySelect.value as FontFamily,
+  textScale: Number(textScaleInput.value),
+  textColor: textColorInput.value,
+  strokeColor: strokeColorInput.value,
+  strokeWidth: Number(strokeWidthInput.value),
+});
+
+const applyFormState = (state: StampFormState): void => {
+  topTextInput.value = state.topText;
+  dateInput.value = state.date;
+  bottomTextInput.value = state.bottomText;
+  eraFormatSelect.value = state.eraFormat;
+  dateSeparatorInput.value = state.dateSeparator;
+  fontFamilySelect.value = state.fontFamily;
+  textScaleInput.value = String(state.textScale);
+  textColorInput.value = state.textColor;
+  strokeColorInput.value = state.strokeColor;
+  strokeWidthInput.value = String(state.strokeWidth);
+};
+
+let histories = loadHistory(localStorage);
+
+const selectHistory = (entry: StampHistoryEntry): void => {
+  applyFormState(entry.state);
+  render();
+};
+
+const renderHistories = (): void => {
+  renderHistoryList(historyListElement, histories, selectHistory);
+};
+
+const saveCurrentHistory = (): void => {
+  histories = saveHistory(localStorage, getFormState());
+  renderHistories();
+};
+
 const render = (): void => {
+  const state = getFormState();
+
   drawStamp(context, canvas, {
-    topText: topTextInput.value,
-    dateText: formatDateText(dateInput.value, eraFormatSelect.value as DateFormat, dateSeparatorInput.value),
-    bottomText: bottomTextInput.value,
-    fontFamily: fontFamilySelect.value as FontFamily,
-    textScale: Number(textScaleInput.value),
-    textColor: textColorInput.value,
-    strokeColor: strokeColorInput.value,
-    strokeWidth: Number(strokeWidthInput.value),
+    topText: state.topText,
+    dateText: formatDateText(state.date, state.eraFormat, state.dateSeparator),
+    bottomText: state.bottomText,
+    fontFamily: state.fontFamily,
+    textScale: state.textScale,
+    textColor: state.textColor,
+    strokeColor: state.strokeColor,
+    strokeWidth: state.strokeWidth,
   });
 };
 
@@ -185,5 +239,9 @@ for (const target of renderTargets) {
   target.addEventListener('input', render);
   target.addEventListener('change', render);
 }
+
+saveHistoryButton.addEventListener('click', saveCurrentHistory);
+
+renderHistories();
 
 render();

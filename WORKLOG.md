@@ -67,3 +67,12 @@
     - `npm run build`（成功）
     - `npm run lint`（成功）
     - `rg -n "文字サイズ|書体|枠線太さ|枠線色|自動縮小|fitFontSizeToWidth|textScale|fontFamily|strokeWidth|strokeColor" SPEC.md src/main.ts src/stamp/drawStamp.ts src/stamp/textStyle.ts`（成功: 仕様突合せ）
+
+- 2026-02-20 | Task: T-006 LocalStorage履歴（最大10件）と編集再開機能
+  - 概要: `src/history/storage.ts` を新規追加し履歴の保存/読込（最大10件ローテーション、破損JSONの安全なフォールバック）を実装。`src/history/historyList.ts` を追加して履歴一覧UI描画と選択イベントを実装。`src/main.ts` に履歴保存ボタン・履歴復元処理を統合し、選択した履歴でフォーム/プレビュー再開可能に更新。`src/history/storage.test.ts` と `TESTS.md` を追加更新。
+  - 確認コマンド:
+    - `npm run test -- storage`（成功）
+    - `npm run build`（成功）
+    - `npm run lint`（成功）
+    - `rg -n "履歴|LocalStorage|最大10件|編集再開|history" SPEC.md src/main.ts src/history/storage.ts src/history/historyList.ts`（成功: 仕様突合せ）
+    - `git status --short`
