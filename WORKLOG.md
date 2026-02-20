@@ -20,6 +20,11 @@
     - `npm run lint`（成功）
     - `git status --short`
 
+- 2026-02-20 | Task: T-001a GitHub Pagesデプロイ基盤（Vite base + Actions）整備
+  - 概要: `vite.config.ts` を新規追加し `base: "/japanese-date-stamp/"` を設定。`.github/workflows/deploy.yml` を追加して `main` への push で `npm ci` → `npm run build` → GitHub Pages デプロイを自動化。
+  - 確認コマンド:
+    - `npm run build`（成功）
+    - `git status --short`
 
 - 2026-02-20 | Task: T-002 Canvas印影レンダリングエンジン実装
   - 概要: `src/stamp/layout.ts` に印影レイアウト計算を実装し、`src/stamp/drawStamp.ts` で外周円・内部2本線・3領域テキスト描画を関数化。`src/main.ts` からフォーム入力イベントで再描画を呼び出し、即時プレビュー更新を実装。`src/stamp/drawStamp.test.ts` を追加して描画呼び出しとレイアウト算出を検証。`TESTS.md` に実行チェックと回帰テストケースを追記。
@@ -43,4 +48,4 @@
     - `npm run test -- drawStamp`（成功）
     - `npm run build`（成功）
     - `npm run lint`（成功）
-    - `git status --short`
+    - 
