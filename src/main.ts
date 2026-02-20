@@ -1,6 +1,8 @@
 import './styles.css';
 import { drawStamp, type FontFamily } from './stamp/drawStamp';
 import { formatDateText, type DateFormat } from './date/formatDate';
+import { exportPng } from './export/exportPng';
+import { exportSvg } from './export/exportSvg';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 
@@ -91,8 +93,8 @@ app.innerHTML = `
         </div>
 
         <div class="grid gap-3 sm:grid-cols-2">
-          <button type="button" class="rounded-md bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700">PNGをダウンロード</button>
-          <button type="button" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">SVGをダウンロード</button>
+          <button id="downloadPng" type="button" class="rounded-md bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700">PNGをダウンロード</button>
+          <button id="downloadSvg" type="button" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">SVGをダウンロード</button>
         </div>
       </form>
 
@@ -131,6 +133,9 @@ const textScaleInput = document.querySelector<HTMLInputElement>('#textScale');
 const textColorInput = document.querySelector<HTMLInputElement>('#textColor');
 const strokeColorInput = document.querySelector<HTMLInputElement>('#strokeColor');
 const strokeWidthInput = document.querySelector<HTMLInputElement>('#strokeWidth');
+const transparentBgInput = document.querySelector<HTMLInputElement>('#transparentBg');
+const downloadPngButton = document.querySelector<HTMLButtonElement>('#downloadPng');
+const downloadSvgButton = document.querySelector<HTMLButtonElement>('#downloadSvg');
 const canvas = document.querySelector<HTMLCanvasElement>('#stampCanvas');
 
 if (
@@ -144,6 +149,9 @@ if (
   !textColorInput ||
   !strokeColorInput ||
   !strokeWidthInput ||
+  !transparentBgInput ||
+  !downloadPngButton ||
+  !downloadSvgButton ||
   !canvas
 ) {
   throw new Error('Rendering controls not found');
@@ -156,9 +164,11 @@ if (!context) {
 }
 
 const render = (): void => {
+  const dateText = formatDateText(dateInput.value, eraFormatSelect.value as DateFormat, dateSeparatorInput.value);
+
   drawStamp(context, canvas, {
     topText: topTextInput.value,
-    dateText: formatDateText(dateInput.value, eraFormatSelect.value as DateFormat, dateSeparatorInput.value),
+    dateText,
     bottomText: bottomTextInput.value,
     fontFamily: fontFamilySelect.value as FontFamily,
     textScale: Number(textScaleInput.value),
@@ -185,5 +195,25 @@ for (const target of renderTargets) {
   target.addEventListener('input', render);
   target.addEventListener('change', render);
 }
+
+downloadPngButton.addEventListener('click', () => {
+  exportPng(canvas, {
+    transparentBackground: transparentBgInput.checked,
+  });
+});
+
+downloadSvgButton.addEventListener('click', () => {
+  exportSvg({
+    size: Math.min(canvas.width, canvas.height),
+    topText: topTextInput.value,
+    dateText: formatDateText(dateInput.value, eraFormatSelect.value as DateFormat, dateSeparatorInput.value),
+    bottomText: bottomTextInput.value,
+    strokeColor: strokeColorInput.value,
+    strokeWidth: Number(strokeWidthInput.value),
+    textColor: textColorInput.value,
+    fontFamily: fontFamilySelect.value as FontFamily,
+    textScale: Number(textScaleInput.value),
+  });
+});
 
 render();
