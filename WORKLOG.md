@@ -111,3 +111,9 @@
     - `npm run build`（成功）
     - `find deploy -maxdepth 3 -type f | sort`（成功）
     - `git status --short`
+- 2026-02-20 | Task: T-010 deployサブパス参照時のアセット解決不具合修正
+  - 概要: `vite.config.ts` の `base` を `/japanese-date-stamp/` から `./` に変更し、`deploy/index.html` が `./assets/*` を参照する形へ再ビルド。`/deploy/` サブパス配信時でもアセット404にならない構成へ修正。
+  - 確認コマンド:
+    - `npm run build`（成功）
+    - `cat deploy/index.html`（成功: 相対パス参照を確認）
+    - `cat DEPLOY.md`（成功）

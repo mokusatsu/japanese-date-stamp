@@ -20,6 +20,8 @@ npm run build
 
 - Vite が `dist/` に最適化済み成果物（`index.html`, `assets/*`）を生成します。
 
+- `vite.config.ts` は `base: "./"` を採用しているため、`/japanese-date-stamp/` 直下配信でも `/japanese-date-stamp/deploy/` のようなサブディレクトリ配信でも、相対パスで `assets/*` を解決できます。
+
 ### 2.3 `deploy/` への配置
 ```bash
 mkdir -p deploy
