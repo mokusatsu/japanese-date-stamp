@@ -232,7 +232,7 @@
   - `src/main.ts` からPNG/SVGダウンロードボタンをエクスポート処理に接続し、フォーム入力値を出力へ反映。
 
 ## T-006: LocalStorage履歴（最大10件）と編集再開機能
-- status: todo
+- status: done
 - priority: high
 - depends_on:
   - T-001
@@ -257,12 +257,17 @@
   - 保存件数が10件を超えると古い履歴から削除される。
   - 履歴選択で編集再開できる。
 - checks:
-  - `npm run test -- storage`
-  - `npm run build`
+  - `npm run test -- storage`（成功）
+  - `npm run test`（成功）
+  - `npm run lint`（成功）
+  - `npm run build`（成功）
+  - `rg -n "LocalStorage|履歴|最大10件|編集再開|外部通信" SPEC.md src/main.ts src/history/storage.ts src/history/historyList.ts`（成功: 仕様突合せ）
 - definition_of_done:
   - LocalStorage永続化と履歴復元が安定して動作する。
 - notes:
-  - 
+  - `src/history/storage.ts` を追加し、LocalStorage保存・読み込み・最大10件ローテーション処理を実装。
+  - `src/history/historyList.ts` を追加し、履歴一覧描画と履歴選択時の編集再開処理を実装。
+  - `src/main.ts` に履歴保存ボタンと履歴復元連携を追加し、選択時にフォームとプレビューを復元。
 
 ## T-007: 統合仕上げ（外部通信なし確認・互換性確認・最終検証）
 - status: todo

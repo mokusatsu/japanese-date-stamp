@@ -76,3 +76,12 @@
     - `npm run lint`（成功）
     - `rg -n "透過背景|ダウンロード形式|PNG|SVG|exportPng|exportSvg|transparentBg|ダウンロード" SPEC.md src/main.ts src/export/exportPng.ts src/export/exportSvg.ts`（成功: 仕様突合せ）
     - `git status --short`
+
+- 2026-02-20 | Task: T-006 LocalStorage履歴（最大10件）と編集再開機能
+  - 概要: `src/history/storage.ts` を追加してLocalStorage永続化と最新10件ローテーションを実装。`src/history/historyList.ts` を追加して履歴一覧描画と選択復元を実装。`src/main.ts` に「現在の設定を履歴に保存」操作、履歴描画、履歴選択時のフォーム・プレビュー復元を接続。
+  - 確認コマンド:
+    - `npm run test -- storage`（成功）
+    - `npm run test`（成功）
+    - `npm run lint`（成功）
+    - `npm run build`（成功）
+    - `rg -n "LocalStorage|履歴|最大10件|編集再開|外部通信" SPEC.md src/main.ts src/history/storage.ts src/history/historyList.ts`（成功: 仕様突合せ）

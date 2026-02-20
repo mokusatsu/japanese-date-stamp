@@ -3,6 +3,8 @@ import { drawStamp, type FontFamily } from './stamp/drawStamp';
 import { formatDateText, type DateFormat } from './date/formatDate';
 import { exportPng } from './export/exportPng';
 import { exportSvg } from './export/exportSvg';
+import { renderHistoryList } from './history/historyList';
+import { loadHistory, saveHistory, type StampFormValues } from './history/storage';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 
@@ -96,6 +98,8 @@ app.innerHTML = `
           <button id="downloadPng" type="button" class="rounded-md bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700">PNGをダウンロード</button>
           <button id="downloadSvg" type="button" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">SVGをダウンロード</button>
         </div>
+
+        <button id="saveHistory" type="button" class="w-full rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">現在の設定を履歴に保存</button>
       </form>
 
       <div class="space-y-6">
@@ -112,11 +116,7 @@ app.innerHTML = `
 
         <section class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
           <h2 class="text-lg font-semibold">履歴（最大10件）</h2>
-          <ul class="mt-3 space-y-2 text-sm" aria-label="履歴一覧">
-            <li class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2">2026/02/20 株式会社サンプル / 承認済</li>
-            <li class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2">2026/02/19 経理部 / 入金確認</li>
-            <li class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2">2026/02/18 人事部 / 面接済</li>
-          </ul>
+          <ul id="historyList" class="mt-3 space-y-2 text-sm" aria-label="履歴一覧"></ul>
         </section>
       </div>
     </section>
@@ -136,6 +136,8 @@ const strokeWidthInput = document.querySelector<HTMLInputElement>('#strokeWidth'
 const transparentBgInput = document.querySelector<HTMLInputElement>('#transparentBg');
 const downloadPngButton = document.querySelector<HTMLButtonElement>('#downloadPng');
 const downloadSvgButton = document.querySelector<HTMLButtonElement>('#downloadSvg');
+const saveHistoryButton = document.querySelector<HTMLButtonElement>('#saveHistory');
+const historyList = document.querySelector<HTMLUListElement>('#historyList');
 const canvas = document.querySelector<HTMLCanvasElement>('#stampCanvas');
 
 if (
@@ -152,6 +154,8 @@ if (
   !transparentBgInput ||
   !downloadPngButton ||
   !downloadSvgButton ||
+  !saveHistoryButton ||
+  !historyList ||
   !canvas
 ) {
   throw new Error('Rendering controls not found');
@@ -175,6 +179,44 @@ const render = (): void => {
     textColor: textColorInput.value,
     strokeColor: strokeColorInput.value,
     strokeWidth: Number(strokeWidthInput.value),
+  });
+};
+
+const getFormValues = (): StampFormValues => ({
+  topText: topTextInput.value,
+  date: dateInput.value,
+  bottomText: bottomTextInput.value,
+  eraFormat: eraFormatSelect.value as DateFormat,
+  dateSeparator: dateSeparatorInput.value,
+  fontFamily: fontFamilySelect.value as FontFamily,
+  textScale: Number(textScaleInput.value),
+  textColor: textColorInput.value,
+  strokeColor: strokeColorInput.value,
+  strokeWidth: Number(strokeWidthInput.value),
+  transparentBackground: transparentBgInput.checked,
+});
+
+const applyFormValues = (values: StampFormValues): void => {
+  topTextInput.value = values.topText;
+  dateInput.value = values.date;
+  bottomTextInput.value = values.bottomText;
+  eraFormatSelect.value = values.eraFormat;
+  dateSeparatorInput.value = values.dateSeparator;
+  fontFamilySelect.value = values.fontFamily;
+  textScaleInput.value = String(values.textScale);
+  textColorInput.value = values.textColor;
+  strokeColorInput.value = values.strokeColor;
+  strokeWidthInput.value = String(values.strokeWidth);
+  transparentBgInput.checked = values.transparentBackground;
+
+  render();
+};
+
+const refreshHistory = (): void => {
+  renderHistoryList({
+    listElement: historyList,
+    entries: loadHistory(),
+    onSelect: (entry) => applyFormValues(entry.values),
   });
 };
 
@@ -216,4 +258,10 @@ downloadSvgButton.addEventListener('click', () => {
   });
 });
 
+saveHistoryButton.addEventListener('click', () => {
+  saveHistory(getFormValues());
+  refreshHistory();
+});
+
 render();
+refreshHistory();
