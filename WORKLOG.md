@@ -58,3 +58,12 @@
     - `npm run lint`（成功）
     - `rg -n "日付フォーマット|区切り|和暦|西暦|formatDateText" SPEC.md src/main.ts src/date/formatDate.ts src/date/japaneseEra.ts`（仕様突合せ）
     - `git status --short`
+
+- 2026-02-20 | Task: T-004 書体・文字サイズ制御と枠線カスタマイズ実装
+  - 概要: `src/stamp/textStyle.ts` を新規追加し、書体マップ、文字サイズ倍率クランプ、長文時の自動縮小処理を実装。`src/stamp/drawStamp.ts` を更新して全領域への書体一括反映・文字サイズ倍率・枠線色/太さ反映を統合。`src/main.ts` に文字サイズ倍率入力を追加し、即時再描画へ接続。`src/stamp/textStyle.test.ts` を追加し、`src/stamp/drawStamp.test.ts` を更新。`TESTS.md` に実行結果と回帰ケースを追記。
+  - 確認コマンド:
+    - `npm run test -- textStyle`（成功）
+    - `npm run test -- drawStamp`（成功）
+    - `npm run build`（成功）
+    - `npm run lint`（成功）
+    - `rg -n "文字サイズ|書体|枠線太さ|枠線色|自動縮小|fitFontSizeToWidth|textScale|fontFamily|strokeWidth|strokeColor" SPEC.md src/main.ts src/stamp/drawStamp.ts src/stamp/textStyle.ts`（成功: 仕様突合せ）
