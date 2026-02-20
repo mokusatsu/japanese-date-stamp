@@ -270,7 +270,7 @@
   - `src/main.ts` に履歴保存ボタンと履歴復元連携を追加し、選択時にフォームとプレビューを復元。
 
 ## T-007: 統合仕上げ（外部通信なし確認・互換性確認・最終検証）
-- status: todo
+- status: done
 - priority: medium
 - depends_on:
   - T-005
@@ -293,10 +293,14 @@
   - 機能要件1〜14を満たす検証記録が残る。
   - 外部通信不要のSPAとして動作する。
 - checks:
-  - `npm run build`
-  - `npm run test`
-  - `npm run lint`
+  - `npm run build`（成功）
+  - `npm run test`（成功）
+  - `npm run lint`（成功）
+  - `rg -n "fetch\(|XMLHttpRequest|WebSocket|EventSource|sendBeacon|navigator\.sendBeacon|axios" src`（成功: 外部通信実装なし）
+  - `rg -n "7\.14|8\.1|8\.2|8\.4|外部通信|パフォーマンス|互換性|セキュリティ・プライバシー" SPEC.md README.md docs/manual-test.md`（成功: 仕様突合せ）
 - definition_of_done:
   - 仕様適合の確認結果と利用手順が文書化されている。
 - notes:
-  - 
+  - `docs/manual-test.md` を新規追加し、入力〜出力〜履歴〜非機能（外部通信なし/互換性/体感性能）の手動検証観点を整備。
+  - `README.md` に利用手順・検証コマンド・非機能要件（外部通信なし、LocalStorage保存、モダンブラウザ互換）を追記。
+  - `src/main.ts` で `reference-layout.svg` の参照パスを `import.meta.env.BASE_URL` ベースへ変更し、サブパス配信互換性を改善。

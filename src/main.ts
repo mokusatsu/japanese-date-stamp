@@ -7,6 +7,7 @@ import { renderHistoryList } from './history/historyList';
 import { loadHistory, saveHistory, type StampFormValues } from './history/storage';
 
 const app = document.querySelector<HTMLDivElement>('#app');
+const referenceLayoutUrl = `${import.meta.env.BASE_URL}reference-layout.svg`;
 
 if (!app) {
   throw new Error('App root not found');
@@ -109,7 +110,7 @@ app.innerHTML = `
             <span class="text-xs text-slate-500">reference-layout.svgベース</span>
           </div>
           <div class="grid place-items-center rounded-lg border border-slate-200 bg-slate-50 p-4">
-            <img src="/reference-layout.svg" alt="データ印レイアウト参考図" class="h-auto w-full max-w-xs" />
+            <img src="${referenceLayoutUrl}" alt="データ印レイアウト参考図" class="h-auto w-full max-w-xs" />
             <canvas id="stampCanvas" lang="ja-JP" width="300" height="300" class="mt-4 w-full max-w-xs rounded-md border border-dashed border-slate-300 bg-white"></canvas>
           </div>
         </section>
