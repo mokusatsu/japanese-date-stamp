@@ -59,6 +59,35 @@
   - `reference-layout.svg` をプレビュー領域に組み込み、後続タスクでCanvas描画接続しやすい構成へ整理。
   - checks実行結果: `npm run build` 成功 / `npm run lint` 成功。
 
+## T-001a: GitHub Pagesデプロイ基盤（Vite base + Actions）整備
+- status: done
+- priority: high
+- depends_on: []
+- scope:
+  - vite.config.ts
+  - .github/workflows/deploy.yml
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 3.1 アーキテクチャ
+  - SPEC.md 7.14
+- goal: GitHub Pages（`https://mokusatsu.github.io/japanese-date-stamp/`）へビルド成果物を自動公開できる状態にする。
+- steps:
+  1. Viteの`base`を`/japanese-date-stamp/`に設定する。
+  2. mainブランチpushで`npm ci`→`npm run build`→PagesデプロイするGitHub Actionsを追加する。
+  3. ビルドコマンドを実行して成果物生成を確認する。
+- acceptance_criteria:
+  - `npm run build` が成功する。
+  - `.github/workflows/deploy.yml` によりGitHub Pagesデプロイジョブが実行可能である。
+  - `base`設定によりPages配信パスでアセットが解決される。
+- checks:
+  - `npm run build`（成功）
+- definition_of_done:
+  - リポジトリにPagesデプロイワークフローとVite base設定が追加されている。
+  - WORKLOG.mdに作業記録が追記されている。
+- notes:
+  - `vite.config.ts` を新規作成し `base: "/japanese-date-stamp/"` を設定。
+  - `.github/workflows/deploy.yml` を追加し、GitHub ActionsでPagesへ自動デプロイする構成を実装。
+
 ## T-002: Canvas印影レンダリングエンジン実装
 - status: todo
 - priority: high

@@ -20,3 +20,9 @@
     - `npm run lint`（成功）
     - `git status --short`
 
+
+- 2026-02-20 | Task: T-001a GitHub Pagesデプロイ基盤（Vite base + Actions）整備
+  - 概要: `vite.config.ts` を新規追加し `base: "/japanese-date-stamp/"` を設定。`.github/workflows/deploy.yml` を追加して `main` への push で `npm ci` → `npm run build` → GitHub Pages デプロイを自動化。
+  - 確認コマンド:
+    - `npm run build`（成功）
+    - `git status --short`
