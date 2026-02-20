@@ -85,3 +85,13 @@
     - `npm run lint`（成功）
     - `npm run build`（成功）
     - `rg -n "LocalStorage|履歴|最大10件|編集再開|外部通信" SPEC.md src/main.ts src/history/storage.ts src/history/historyList.ts`（成功: 仕様突合せ）
+
+- 2026-02-20 | Task: T-007 統合仕上げ（外部通信なし確認・互換性確認・最終検証）
+  - 概要: `docs/manual-test.md` を新規作成して入力〜出力〜履歴〜非機能（外部通信なし・互換性・性能）の手動検証観点を整理。`README.md` にセットアップ/検証手順と制約（完全クライアントサイド、LocalStorage保存、モダンブラウザ対象）を追記。`src/main.ts` の参考レイアウトSVG参照を `import.meta.env.BASE_URL` ベースに変更し、サブパス配信互換性を改善。`TESTS.md` と `TASKS.md` を更新してチェック結果と回帰観点を記録。
+  - 確認コマンド:
+    - `npm run test`（成功）
+    - `npm run lint`（成功）
+    - `npm run build`（成功）
+    - `rg -n "fetch\(|XMLHttpRequest|WebSocket|EventSource|sendBeacon|navigator\.sendBeacon|axios" src`（成功: 外部通信実装なし）
+    - `rg -n "7\.14|8\.1|8\.2|8\.4|外部通信|パフォーマンス|互換性|セキュリティ・プライバシー" SPEC.md README.md docs/manual-test.md`（成功: 仕様突合せ）
+    - `git status --short`
