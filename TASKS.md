@@ -124,7 +124,7 @@
   - 追加修正として線ストローク太さを `reference-layout.svg` の仕様（外周2倍・内周/横線同一、既定3px）に一致させ、初期テキストを上枠「田中」/下枠「一郎」へ変更。HTML言語指定を `ja-JP` へ修正し日本語グリフ優先フォントを適用した。
 
 ## T-003: 日付フォーマット（和暦/西暦・区切り）実装
-- status: todo
+- status: done
 - priority: high
 - depends_on:
   - T-002
@@ -147,12 +147,15 @@
   - 和暦/西暦切替が表示に反映される。
   - 区切り変更が日付表示と出力に反映される。
 - checks:
-  - `npm run test -- formatDate`
-  - `npm run build`
+  - `npm run test -- formatDate`（成功）
+  - `npm run build`（成功）
+  - `npm run lint`（成功）
 - definition_of_done:
   - 日付整形ロジックがユニットテスト可能な独立モジュールとして実装されている。
 - notes:
-  - 
+  - `src/date/japaneseEra.ts` と `src/date/formatDate.ts` を追加し、和暦（令和/平成/昭和/大正/明治）変換と西暦/和暦フォーマット処理を実装。
+  - `src/main.ts` から日付入力を `formatDateText` 経由で描画へ反映し、日付フォーマット切替と区切り文字（プリセット+自由入力）を即時プレビュー更新に接続。
+  - `src/date/formatDate.test.ts` を追加し、元号境界・区切り文字適用・和暦/西暦の整形ロジックを検証。
 
 ## T-004: 書体・文字サイズ制御と枠線カスタマイズ実装
 - status: todo
