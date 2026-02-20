@@ -1,0 +1,250 @@
+# TASKS
+
+## T-000: SPEC.mdに基づく初期タスク分解
+- status: done
+- priority: high
+- depends_on: []
+- scope:
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 1.目的
+  - SPEC.md 2.スコープ
+  - SPEC.md 7.機能要件
+  - SPEC.md 8.非機能要件
+- goal: 仕様を実装可能な単位へ分解し、依存関係付きのタスク計画を確立する。
+- steps:
+  1. SPEC.md の要件を機能群（UI、描画、フォーマット、出力、履歴）に分類する。
+  2. 1目的あたり1〜3ファイルの粒度で実装タスクを定義する。
+  3. depends_on と受け入れ条件を付与し、実行順序を確定する。
+- acceptance_criteria:
+  - 固定項目を満たすタスク一覧が TASKS.md に記載されている。
+  - 主要機能要件（7章）が少なくとも1つのタスクにトレースされている。
+- checks:
+  - `cat SPEC.md`
+  - `cat TASKS.md`
+- definition_of_done:
+  - TASKS.md に実行可能なタスクバックログが作成され、依存関係が明示されている。
+  - WORKLOG.md に本タスクの実施記録が追記されている。
+- notes:
+  - SPEC.md をもとに実装バックログ（T-001〜T-007）を新規作成した。
+
+## T-001: SPA骨組みとTailwindベースの単一画面UI構築
+- status: todo
+- priority: high
+- depends_on: []
+- scope:
+  - index.html
+  - src/main.ts
+  - src/styles.css
+- spec_refs:
+  - SPEC.md 3.1 アーキテクチャ
+  - SPEC.md 4.1 入力項目
+  - SPEC.md 8.3 ユーザビリティ
+- goal: 入力フォーム・プレビュー領域・履歴欄・ダウンロード操作を含む単一画面のUI基盤を作る。
+- steps:
+  1. 画面レイアウト（フォーム/Canvas/履歴/操作）を実装する。
+  2. Tailwind CSS で可読性の高い余白・コントラストを適用する。
+  3. 入力コントロールの初期値（色、線幅など）を仕様通り設定する。
+- acceptance_criteria:
+  - 画面上に仕様4.1/4.2の全操作要素が表示される。
+  - 単一画面で主要操作に到達できる。
+- checks:
+  - `npm run build`
+  - `npm run lint`
+- definition_of_done:
+  - UI骨組みが構築され、以降の描画・出力機能を接続できる状態である。
+- notes:
+  - 
+
+## T-002: Canvas印影レンダリングエンジン実装
+- status: todo
+- priority: high
+- depends_on:
+  - T-001
+- scope:
+  - src/stamp/drawStamp.ts
+  - src/stamp/layout.ts
+  - src/main.ts
+- spec_refs:
+  - SPEC.md 3.2 レンダリング
+  - SPEC.md 5.1 外形
+  - SPEC.md 5.2 内部構造
+  - SPEC.md 5.3 文字配置
+  - SPEC.md 7.1
+- goal: 円形枠・内部2本線・3領域テキストをCanvas上に即時描画できるようにする。
+- steps:
+  1. 描画パラメータから外周円と内部線を描画する。
+  2. 上中下テキストを中央揃えで配置する。
+  3. 入力変更時に再描画されるイベント連携を行う。
+- acceptance_criteria:
+  - 仕様の印影構造（円＋2線＋3領域文字）がプレビューに反映される。
+  - 入力変更に追従して遅延なく再描画される。
+- checks:
+  - `npm run test -- drawStamp`
+  - `npm run build`
+- definition_of_done:
+  - 描画ロジックが関数分離され、UIイベントから再利用可能である。
+- notes:
+  - 
+
+## T-003: 日付フォーマット（和暦/西暦・区切り）実装
+- status: todo
+- priority: high
+- depends_on:
+  - T-002
+- scope:
+  - src/date/formatDate.ts
+  - src/date/japaneseEra.ts
+  - src/main.ts
+- spec_refs:
+  - SPEC.md 4.1 日付フォーマット
+  - SPEC.md 5.6 日付フォーマット
+  - SPEC.md 6.1 入力
+  - SPEC.md 7.5
+  - SPEC.md 7.6
+- goal: 指定された日付を和暦/西暦および任意区切りで整形し、中央領域と出力へ反映する。
+- steps:
+  1. 西暦フォーマット処理を実装する。
+  2. 和暦変換処理（元号・年数）を実装する。
+  3. 区切りプリセット/自由入力を表示文字列に適用する。
+- acceptance_criteria:
+  - 和暦/西暦切替が表示に反映される。
+  - 区切り変更が日付表示と出力に反映される。
+- checks:
+  - `npm run test -- formatDate`
+  - `npm run build`
+- definition_of_done:
+  - 日付整形ロジックがユニットテスト可能な独立モジュールとして実装されている。
+- notes:
+  - 
+
+## T-004: 書体・文字サイズ制御と枠線カスタマイズ実装
+- status: todo
+- priority: medium
+- depends_on:
+  - T-002
+- scope:
+  - src/stamp/textStyle.ts
+  - src/stamp/drawStamp.ts
+  - src/main.ts
+- spec_refs:
+  - SPEC.md 5.3 文字配置
+  - SPEC.md 5.4 書体
+  - SPEC.md 5.5 枠線カスタマイズ
+  - SPEC.md 7.4
+  - SPEC.md 7.7
+  - SPEC.md 7.8
+- goal: 明朝/ゴシック切替、文字サイズ調整、枠線太さ・色変更を描画へ反映する。
+- steps:
+  1. 書体系フォントファミリーの切替処理を追加する。
+  2. 長文時の視認性確保（自動縮小または制限）を実装する。
+  3. 枠線太さ・色を外周と内部線に適用する。
+- acceptance_criteria:
+  - 書体変更が全領域に一括反映される。
+  - 枠線色/太さの変更がプレビューへ反映される。
+- checks:
+  - `npm run test -- textStyle`
+  - `npm run build`
+- definition_of_done:
+  - 視認性を損なわない文字描画と枠線カスタマイズが実装されている。
+- notes:
+  - 
+
+## T-005: PNG/SVGダウンロード機能と透過背景対応
+- status: todo
+- priority: high
+- depends_on:
+  - T-003
+  - T-004
+- scope:
+  - src/export/exportPng.ts
+  - src/export/exportSvg.ts
+  - src/main.ts
+- spec_refs:
+  - SPEC.md 4.1 背景
+  - SPEC.md 4.1 ダウンロード形式
+  - SPEC.md 6.2 出力
+  - SPEC.md 7.9
+  - SPEC.md 7.10
+  - SPEC.md 7.11
+- goal: Canvas内容をPNG/SVGとしてダウンロードし、PNGで透過背景を選択可能にする。
+- steps:
+  1. PNGエクスポート処理を実装し透過背景オプションを反映する。
+  2. 同等構造のSVG生成ロジックを実装する。
+  3. UIのダウンロード操作から各処理を呼び出す。
+- acceptance_criteria:
+  - PNGとSVGの両形式でダウンロードできる。
+  - 透過背景ON時にPNG背景が透明になる。
+- checks:
+  - `npm run test -- export`
+  - `npm run build`
+- definition_of_done:
+  - 出力画像がプレビュー内容と整合し、仕様フォーマットで保存できる。
+- notes:
+  - 
+
+## T-006: LocalStorage履歴（最大10件）と編集再開機能
+- status: todo
+- priority: high
+- depends_on:
+  - T-001
+  - T-003
+  - T-004
+- scope:
+  - src/history/storage.ts
+  - src/history/historyList.ts
+  - src/main.ts
+- spec_refs:
+  - SPEC.md 4.2 履歴一覧
+  - SPEC.md 6.2 LocalStorageへの履歴保存
+  - SPEC.md 7.12
+  - SPEC.md 7.13
+  - SPEC.md 8.5 ローカルデータ保持
+- goal: 作成パラメータを最新10件まで保存し、履歴選択でフォームへ復元できるようにする。
+- steps:
+  1. 保存データ構造と10件上限のローテーション処理を実装する。
+  2. 履歴一覧UIに読み込み・選択操作を実装する。
+  3. 選択した履歴でフォーム/プレビューを復元する。
+- acceptance_criteria:
+  - 保存件数が10件を超えると古い履歴から削除される。
+  - 履歴選択で編集再開できる。
+- checks:
+  - `npm run test -- storage`
+  - `npm run build`
+- definition_of_done:
+  - LocalStorage永続化と履歴復元が安定して動作する。
+- notes:
+  - 
+
+## T-007: 統合仕上げ（外部通信なし確認・互換性確認・最終検証）
+- status: todo
+- priority: medium
+- depends_on:
+  - T-005
+  - T-006
+- scope:
+  - README.md
+  - docs/manual-test.md
+  - src/main.ts
+- spec_refs:
+  - SPEC.md 7.14
+  - SPEC.md 8.1 パフォーマンス
+  - SPEC.md 8.2 互換性
+  - SPEC.md 8.4 セキュリティ・プライバシー
+- goal: 非機能要件と最終受け入れを確認し、運用可能な状態に整える。
+- steps:
+  1. 手動テスト観点（入力〜出力〜履歴）を整理する。
+  2. 外部通信を行わないことをコード/実行で確認する。
+  3. READMEに利用手順・制約を追記する。
+- acceptance_criteria:
+  - 機能要件1〜14を満たす検証記録が残る。
+  - 外部通信不要のSPAとして動作する。
+- checks:
+  - `npm run build`
+  - `npm run test`
+  - `npm run lint`
+- definition_of_done:
+  - 仕様適合の確認結果と利用手順が文書化されている。
+- notes:
+  - 
