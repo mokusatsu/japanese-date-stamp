@@ -95,3 +95,11 @@
     - `rg -n "fetch\(|XMLHttpRequest|WebSocket|EventSource|sendBeacon|navigator\.sendBeacon|axios" src`（成功: 外部通信実装なし）
     - `rg -n "7\.14|8\.1|8\.2|8\.4|外部通信|パフォーマンス|互換性|セキュリティ・プライバシー" SPEC.md README.md docs/manual-test.md`（成功: 仕様突合せ）
     - `git status --short`
+
+- 2026-02-20 | Task: T-008 TSトランスパイル成果物のdeploy格納
+  - 概要: `npm ci` と `npm run build` を実行し、生成された `dist/` の成果物を `deploy/` 配下へコピーしてデプロイ用ディレクトリを作成。
+  - 確認コマンド:
+    - `npm ci`（成功）
+    - `npm run build`（成功）
+    - `find deploy -maxdepth 3 -type f | sort`（成功）
+    - `git status --short`
