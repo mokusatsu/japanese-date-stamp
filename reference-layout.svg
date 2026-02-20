@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="30mm" height="30mm" viewBox="0 0 300 300" xml:lang="ja">
+
+  <defs>
+    <style>
+      :root { 
+        /* ここを変えるだけで全ての線の太さが連動 */
+        --base-stroke: 3;
+	--line-color: red;
+	--text-color: red;
+      }
+      
+      /* 計算結果を適用 */
+      .bold-stroke { stroke-width: calc(var(--base-stroke) * 2); } 
+      .normal-stroke { stroke-width: var(--base-stroke); } 
+
+      .ink { 
+        fill: none; 
+        stroke: var(--line-color); 
+        stroke-linecap: round; 
+        stroke-linejoin: round; 
+      }
+      .txt { 
+        fill: var(--text-color);  
+        font-family: serif; 
+      }
+      .topbot { font-size: 48px; font-weight: 700; letter-spacing: 2px; }
+      .date { font-size: 44px; font-weight: 700; letter-spacing: 1px; }
+    </style>
+  </defs>
+
+  <circle class="ink bold-stroke" cx="150" cy="150" r="142"/>
+  
+  <circle class="ink normal-stroke" cx="150" cy="150" r="128" />
+
+  <line class="ink normal-stroke" x1="35" y1="100" x2="265" y2="100" />
+  <line class="ink normal-stroke" x1="35" y1="200" x2="265" y2="200" />
+
+  <text class="txt topbot" x="150" y="70" text-anchor="middle" dominant-baseline="middle">岡本</text>
+
+  <text class="txt date" x="150" y="150" text-anchor="middle" dominant-baseline="middle">2026.02.20</text>
+
+  <text class="txt topbot" x="150" y="240" text-anchor="middle" dominant-baseline="middle">圭司</text>
+
+</svg>
