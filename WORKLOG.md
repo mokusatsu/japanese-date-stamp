@@ -67,3 +67,12 @@
     - `npm run build`（成功）
     - `npm run lint`（成功）
     - `rg -n "文字サイズ|書体|枠線太さ|枠線色|自動縮小|fitFontSizeToWidth|textScale|fontFamily|strokeWidth|strokeColor" SPEC.md src/main.ts src/stamp/drawStamp.ts src/stamp/textStyle.ts`（成功: 仕様突合せ）
+
+- 2026-02-20 | Task: T-005 PNG/SVGダウンロード機能と透過背景対応
+  - 概要: `src/export/exportPng.ts` を追加し、PNG透過背景ON/OFFの切替出力（通常時は白背景合成）を実装。`src/export/exportSvg.ts` を追加し、プレビュー同等構造のSVG生成とダウンロードを実装。`src/main.ts` のPNG/SVGボタンを新規エクスポート処理へ接続。`src/export/*.test.ts` と `TESTS.md` を更新し、回帰防止ケースを追記。
+  - 確認コマンド:
+    - `npm run test -- export`（成功）
+    - `npm run build`（成功）
+    - `npm run lint`（成功）
+    - `rg -n "透過背景|ダウンロード形式|PNG|SVG|exportPng|exportSvg|transparentBg|ダウンロード" SPEC.md src/main.ts src/export/exportPng.ts src/export/exportSvg.ts`（成功: 仕様突合せ）
+    - `git status --short`
