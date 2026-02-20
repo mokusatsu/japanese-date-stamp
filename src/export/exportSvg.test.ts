@@ -38,6 +38,23 @@ describe('createStampSvg', () => {
 
     expect(svg).toContain('A&amp;B&lt;&quot;&apos; &gt;');
   });
+
+  it('font-family属性値の引用符をエスケープする', () => {
+    const svg = createStampSvg({
+      size: 300,
+      topText: '田中',
+      dateText: '2026/02/20',
+      bottomText: '一郎',
+      strokeColor: '#ff0000',
+      strokeWidth: 3,
+      textColor: '#ff0000',
+      fontFamily: 'mincho',
+      textScale: 1,
+    });
+
+    expect(svg).toContain("font-family='\"Noto Serif JP\", \"Hiragino Mincho ProN\", \"Yu Mincho\", serif'");
+    expect(svg).not.toContain('font-family=""');
+  });
 });
 
 describe('exportSvg', () => {

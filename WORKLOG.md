@@ -117,3 +117,16 @@
     - `npm run build`（成功）
     - `cat deploy/index.html`（成功: 相対パス参照を確認）
     - `cat DEPLOY.md`（成功）
+- 2026-02-20 | Task: T-011 SVG text要素のfont-family属性フォーマット不具合修正
+  - 概要: `src/export/exportSvg.ts` の `font-family` 属性値にXML属性エスケープを適用し、`"..."` を含むフォントスタックが不正な二重引用符構造になる問題を修正。`src/export/exportSvg.test.ts` に属性値エスケープ確認テストを追加して回帰を防止。
+  - 確認コマンド:
+    - `npm run test -- exportSvg`（成功）
+    - `npm run build`（成功）
+    - `git status --short`
+- 2026-02-20 | Task: T-012 SVGダウンロード実体のレンダリング検証とfont-family属性再修正
+  - 概要: `src/export/exportSvg.ts` の `font-family` 属性をシングルクォート区切りへ変更し、フォント名内ダブルクォートとの衝突で `font-family=""` 形式が発生しないよう修正。`src/export/exportSvg.test.ts` へ不正形式非含有の検証を追加。Playwrightで実際にSVGをダウンロードし、再描画スクリーンショットを取得してレンダリング確認を実施。
+  - 確認コマンド:
+    - `npm run test -- exportSvg`（成功）
+    - `npm run build`（成功）
+    - `mcp__browser_tools__run_playwright_script`（成功: `downloaded-stamp.svg` / `svg-render-check.png` 生成）
+    - `git status --short`

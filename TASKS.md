@@ -404,3 +404,68 @@
   - `vite.config.ts` の `base` を `"./"` に変更し、配信パス非依存でアセット解決できるようにした。
   - `npm run build` 後に `deploy/` を更新し、`deploy/index.html` が `./assets/*` を参照することを確認した。
   - `DEPLOY.md` に相対 `base` 採用理由（`/`直下・サブディレクトリ双方での互換性）を追記した。
+
+## T-011: SVG text要素のfont-family属性フォーマット不具合修正
+- status: done
+- priority: high
+- depends_on:
+  - T-010
+- scope:
+  - src/export/exportSvg.ts
+  - src/export/exportSvg.test.ts
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 7.9
+  - SPEC.md 7.10
+- goal: SVG出力時の`font-family`属性値をXMLとして正しい形式にし、`text`要素が不正マークアップにならないようにする。
+- steps:
+  1. SVG文字列生成処理で属性値エスケープの欠落箇所を特定する。
+  2. `font-family`属性を含む属性値が常にXMLエスケープされるよう修正する。
+  3. ユニットテストを追加し、回帰を防止する。
+- acceptance_criteria:
+  - `font-family` 属性値内の `"` が `&quot;` として出力される。
+  - 既存のSVG生成テストが成功する。
+  - `npm run build` が成功する。
+- checks:
+  - `npm run test -- exportSvg`（成功）
+  - `npm run build`（成功）
+- definition_of_done:
+  - SVG出力された`text`要素がXMLとして妥当な属性フォーマットで生成される。
+  - TASKS.md / WORKLOG.md に実施内容と確認結果が追記されている。
+- notes:
+  - `resolveFontFamily` の戻り値を `font-family` 属性へ埋め込む際に属性値エスケープを適用し、二重引用符が重複する不正形式を解消。
+  - `font-family` の属性値に `&quot;` が含まれることを確認するテストを追加して再発防止。
+
+## T-012: SVGダウンロード実体のレンダリング検証とfont-family属性再修正
+- status: done
+- priority: high
+- depends_on:
+  - T-011
+- scope:
+  - src/export/exportSvg.ts
+  - src/export/exportSvg.test.ts
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 7.9
+  - SPEC.md 7.10
+- goal: ダウンロードしたSVG実体でレンダリング確認を行い、`text`要素の`font-family`属性が不正形式にならないことを実データで担保する。
+- steps:
+  1. `font-family`属性の囲み方を見直し、フォント名内の`"`と属性区切りが衝突しない形式へ修正する。
+  2. 単体テストに不正形式（`font-family=""`）が含まれないことの検証を追加する。
+  3. ブラウザ自動操作でSVGを実際にダウンロードし、レンダリング画像を取得して確認する。
+- acceptance_criteria:
+  - 生成SVGの`font-family`が`font-family='"..."'`形式で出力され、`font-family=""`が含まれない。
+  - `npm run test -- exportSvg` と `npm run build` が成功する。
+  - ダウンロードSVGのレンダリング確認用スクリーンショットが取得できる。
+- checks:
+  - `npm run test -- exportSvg`（成功）
+  - `npm run build`（成功）
+  - `mcp__browser_tools__run_playwright_script`（成功: SVGダウンロードとレンダリング画像取得）
+- definition_of_done:
+  - SVG出力の`font-family`属性フォーマットが実データで検証済みであり、表示崩れの再発を防止できる。
+  - TASKS.md / WORKLOG.md に実施内容と確認結果が追記されている。
+- notes:
+  - `font-family`属性をシングルクォート区切りへ変更し、フォント名のダブルクォートを保持したまま属性構文衝突を回避。
+  - Playwrightで実際に`#downloadSvg`から取得したファイルを再描画し、スクリーンショットを取得して確認。
