@@ -49,3 +49,12 @@
     - `npm run build`（成功）
     - `npm run lint`（成功）
     - 
+
+- 2026-02-20 | Task: T-003 日付フォーマット（和暦/西暦・区切り）実装
+  - 概要: `src/date/japaneseEra.ts` と `src/date/formatDate.ts` を新規追加し、和暦変換（令和/平成/昭和/大正/明治）と西暦/和暦の整形処理を実装。`src/main.ts` で日付フォーマット選択と区切り文字（プリセット+自由入力）を `formatDateText` に接続し、中央領域へ即時反映。`src/date/formatDate.test.ts` と `TESTS.md` を追加更新し回帰検証を整備。
+  - 確認コマンド:
+    - `npm run test -- formatDate`（成功）
+    - `npm run build`（成功）
+    - `npm run lint`（成功）
+    - `rg -n "日付フォーマット|区切り|和暦|西暦|formatDateText" SPEC.md src/main.ts src/date/formatDate.ts src/date/japaneseEra.ts`（仕様突合せ）
+    - `git status --short`

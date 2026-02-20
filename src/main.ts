@@ -1,5 +1,6 @@
 import './styles.css';
 import { drawStamp, type FontFamily } from './stamp/drawStamp';
+import { formatDateText, type DateFormat } from './date/formatDate';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 
@@ -43,12 +44,13 @@ app.innerHTML = `
           </div>
           <div>
             <label class="input-label" for="dateSeparator">日付区切り文字</label>
-            <select class="input-control" id="dateSeparator">
-              <option value="/" selected>/</option>
-              <option value="-">-</option>
-              <option value=".">.</option>
-              <option value="年/月/日">年/月/日</option>
-            </select>
+            <input class="input-control" id="dateSeparator" type="text" list="dateSeparatorPresets" value="/" />
+            <datalist id="dateSeparatorPresets">
+              <option value="/" />
+              <option value="-" />
+              <option value="." />
+              <option value="年/月/日" />
+            </datalist>
           </div>
         </div>
 
@@ -118,6 +120,8 @@ app.innerHTML = `
 const topTextInput = document.querySelector<HTMLInputElement>('#topText');
 const dateInput = document.querySelector<HTMLInputElement>('#date');
 const bottomTextInput = document.querySelector<HTMLInputElement>('#bottomText');
+const eraFormatSelect = document.querySelector<HTMLSelectElement>('#eraFormat');
+const dateSeparatorInput = document.querySelector<HTMLInputElement>('#dateSeparator');
 const fontFamilySelect = document.querySelector<HTMLSelectElement>('#fontFamily');
 const textColorInput = document.querySelector<HTMLInputElement>('#textColor');
 const strokeColorInput = document.querySelector<HTMLInputElement>('#strokeColor');
@@ -128,6 +132,8 @@ if (
   !topTextInput ||
   !dateInput ||
   !bottomTextInput ||
+  !eraFormatSelect ||
+  !dateSeparatorInput ||
   !fontFamilySelect ||
   !textColorInput ||
   !strokeColorInput ||
@@ -146,7 +152,7 @@ if (!context) {
 const render = (): void => {
   drawStamp(context, canvas, {
     topText: topTextInput.value,
-    dateText: dateInput.value,
+    dateText: formatDateText(dateInput.value, eraFormatSelect.value as DateFormat, dateSeparatorInput.value),
     bottomText: bottomTextInput.value,
     fontFamily: fontFamilySelect.value as FontFamily,
     textColor: textColorInput.value,
@@ -159,6 +165,8 @@ const renderTargets: Array<HTMLInputElement | HTMLSelectElement> = [
   topTextInput,
   dateInput,
   bottomTextInput,
+  eraFormatSelect,
+  dateSeparatorInput,
   fontFamilySelect,
   textColorInput,
   strokeColorInput,
