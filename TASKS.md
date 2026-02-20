@@ -404,3 +404,35 @@
   - `vite.config.ts` の `base` を `"./"` に変更し、配信パス非依存でアセット解決できるようにした。
   - `npm run build` 後に `deploy/` を更新し、`deploy/index.html` が `./assets/*` を参照することを確認した。
   - `DEPLOY.md` に相対 `base` 採用理由（`/`直下・サブディレクトリ双方での互換性）を追記した。
+
+## T-011: SVG text要素のfont-family属性フォーマット不具合修正
+- status: done
+- priority: high
+- depends_on:
+  - T-010
+- scope:
+  - src/export/exportSvg.ts
+  - src/export/exportSvg.test.ts
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 7.9
+  - SPEC.md 7.10
+- goal: SVG出力時の`font-family`属性値をXMLとして正しい形式にし、`text`要素が不正マークアップにならないようにする。
+- steps:
+  1. SVG文字列生成処理で属性値エスケープの欠落箇所を特定する。
+  2. `font-family`属性を含む属性値が常にXMLエスケープされるよう修正する。
+  3. ユニットテストを追加し、回帰を防止する。
+- acceptance_criteria:
+  - `font-family` 属性値内の `"` が `&quot;` として出力される。
+  - 既存のSVG生成テストが成功する。
+  - `npm run build` が成功する。
+- checks:
+  - `npm run test -- exportSvg`（成功）
+  - `npm run build`（成功）
+- definition_of_done:
+  - SVG出力された`text`要素がXMLとして妥当な属性フォーマットで生成される。
+  - TASKS.md / WORKLOG.md に実施内容と確認結果が追記されている。
+- notes:
+  - `resolveFontFamily` の戻り値を `font-family` 属性へ埋め込む際に属性値エスケープを適用し、二重引用符が重複する不正形式を解消。
+  - `font-family` の属性値に `&quot;` が含まれることを確認するテストを追加して再発防止。
