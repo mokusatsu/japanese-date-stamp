@@ -8,6 +8,8 @@ import {
   type StampHistoryEntry,
 } from './history/storage';
 import { renderHistoryList } from './history/historyList';
+import { exportPng } from './export/exportPng';
+import { exportSvg } from './export/exportSvg';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 
@@ -98,8 +100,8 @@ app.innerHTML = `
         </div>
 
         <div class="grid gap-3 sm:grid-cols-2">
-          <button type="button" class="rounded-md bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700">PNGをダウンロード</button>
-          <button type="button" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">SVGをダウンロード</button>
+          <button id="downloadPng" type="button" class="rounded-md bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700">PNGをダウンロード</button>
+          <button id="downloadSvg" type="button" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">SVGをダウンロード</button>
         </div>
       </form>
 
@@ -139,6 +141,9 @@ const strokeColorInput = document.querySelector<HTMLInputElement>('#strokeColor'
 const strokeWidthInput = document.querySelector<HTMLInputElement>('#strokeWidth');
 const historyListElement = document.querySelector<HTMLUListElement>('#historyList');
 const saveHistoryButton = document.querySelector<HTMLButtonElement>('#saveHistoryButton');
+const transparentBgInput = document.querySelector<HTMLInputElement>('#transparentBg');
+const downloadPngButton = document.querySelector<HTMLButtonElement>('#downloadPng');
+const downloadSvgButton = document.querySelector<HTMLButtonElement>('#downloadSvg');
 const canvas = document.querySelector<HTMLCanvasElement>('#stampCanvas');
 
 if (
@@ -154,6 +159,9 @@ if (
   !strokeWidthInput ||
   !historyListElement ||
   !saveHistoryButton ||
+  !transparentBgInput ||
+  !downloadPngButton ||
+  !downloadSvgButton ||
   !canvas
 ) {
   throw new Error('Rendering controls not found');
@@ -208,17 +216,17 @@ const saveCurrentHistory = (): void => {
 };
 
 const render = (): void => {
-  const state = getFormState();
+  const dateText = formatDateText(dateInput.value, eraFormatSelect.value as DateFormat, dateSeparatorInput.value);
 
   drawStamp(context, canvas, {
-    topText: state.topText,
-    dateText: formatDateText(state.date, state.eraFormat, state.dateSeparator),
-    bottomText: state.bottomText,
-    fontFamily: state.fontFamily,
-    textScale: state.textScale,
-    textColor: state.textColor,
-    strokeColor: state.strokeColor,
-    strokeWidth: state.strokeWidth,
+    topText: topTextInput.value,
+    dateText,
+    bottomText: bottomTextInput.value,
+    fontFamily: fontFamilySelect.value as FontFamily,
+    textScale: Number(textScaleInput.value),
+    textColor: textColorInput.value,
+    strokeColor: strokeColorInput.value,
+    strokeWidth: Number(strokeWidthInput.value),
   });
 };
 
@@ -240,8 +248,24 @@ for (const target of renderTargets) {
   target.addEventListener('change', render);
 }
 
-saveHistoryButton.addEventListener('click', saveCurrentHistory);
+downloadPngButton.addEventListener('click', () => {
+  exportPng(canvas, {
+    transparentBackground: transparentBgInput.checked,
+  });
+});
 
-renderHistories();
+downloadSvgButton.addEventListener('click', () => {
+  exportSvg({
+    size: Math.min(canvas.width, canvas.height),
+    topText: topTextInput.value,
+    dateText: formatDateText(dateInput.value, eraFormatSelect.value as DateFormat, dateSeparatorInput.value),
+    bottomText: bottomTextInput.value,
+    strokeColor: strokeColorInput.value,
+    strokeWidth: Number(strokeWidthInput.value),
+    textColor: textColorInput.value,
+    fontFamily: fontFamilySelect.value as FontFamily,
+    textScale: Number(textScaleInput.value),
+  });
+});
 
 render();

@@ -195,7 +195,7 @@
   - `src/main.ts` に文字サイズ倍率入力を追加し、既存の書体/枠線入力とあわせて即時プレビュー再描画に接続。
 
 ## T-005: PNG/SVGダウンロード機能と透過背景対応
-- status: todo
+- status: done
 - priority: high
 - depends_on:
   - T-003
@@ -220,12 +220,16 @@
   - PNGとSVGの両形式でダウンロードできる。
   - 透過背景ON時にPNG背景が透明になる。
 - checks:
-  - `npm run test -- export`
-  - `npm run build`
+  - `npm run test -- export`（成功）
+  - `npm run build`（成功）
+  - `npm run lint`（成功）
+  - `rg -n "透過背景|ダウンロード形式|PNG|SVG|exportPng|exportSvg|transparentBg|ダウンロード" SPEC.md src/main.ts src/export/exportPng.ts src/export/exportSvg.ts`（成功: 仕様突合せ）
 - definition_of_done:
   - 出力画像がプレビュー内容と整合し、仕様フォーマットで保存できる。
 - notes:
-  - 
+  - `src/export/exportPng.ts` を追加し、透過背景ON/OFFを切り替え可能なPNG出力（透過時は元Canvas、通常時は白背景合成）を実装。
+  - `src/export/exportSvg.ts` を追加し、プレビューと同等構造（外周円・内周円・2本線・3領域テキスト）のSVG生成およびダウンロード処理を実装。
+  - `src/main.ts` からPNG/SVGダウンロードボタンをエクスポート処理に接続し、フォーム入力値を出力へ反映。
 
 ## T-006: LocalStorage履歴（最大10件）と編集再開機能
 - status: done
