@@ -1,4 +1,5 @@
 import './styles.css';
+import { drawStamp, type FontFamily } from './stamp/drawStamp';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 
@@ -19,7 +20,7 @@ app.innerHTML = `
 
         <div>
           <label class="input-label" for="topText">上枠テキスト</label>
-          <input class="input-control" id="topText" type="text" value="株式会社サンプル" />
+          <input class="input-control" id="topText" type="text" value="田中" />
         </div>
 
         <div>
@@ -29,7 +30,7 @@ app.innerHTML = `
 
         <div>
           <label class="input-label" for="bottomText">下枠テキスト</label>
-          <input class="input-control" id="bottomText" type="text" value="承認済" />
+          <input class="input-control" id="bottomText" type="text" value="一郎" />
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2">
@@ -97,7 +98,7 @@ app.innerHTML = `
           </div>
           <div class="grid place-items-center rounded-lg border border-slate-200 bg-slate-50 p-4">
             <img src="/reference-layout.svg" alt="データ印レイアウト参考図" class="h-auto w-full max-w-xs" />
-            <canvas width="320" height="320" class="mt-4 w-full max-w-xs rounded-md border border-dashed border-slate-300 bg-white"></canvas>
+            <canvas id="stampCanvas" lang="ja-JP" width="300" height="300" class="mt-4 w-full max-w-xs rounded-md border border-dashed border-slate-300 bg-white"></canvas>
           </div>
         </section>
 
@@ -113,3 +114,60 @@ app.innerHTML = `
     </section>
   </main>
 `;
+
+const topTextInput = document.querySelector<HTMLInputElement>('#topText');
+const dateInput = document.querySelector<HTMLInputElement>('#date');
+const bottomTextInput = document.querySelector<HTMLInputElement>('#bottomText');
+const fontFamilySelect = document.querySelector<HTMLSelectElement>('#fontFamily');
+const textColorInput = document.querySelector<HTMLInputElement>('#textColor');
+const strokeColorInput = document.querySelector<HTMLInputElement>('#strokeColor');
+const strokeWidthInput = document.querySelector<HTMLInputElement>('#strokeWidth');
+const canvas = document.querySelector<HTMLCanvasElement>('#stampCanvas');
+
+if (
+  !topTextInput ||
+  !dateInput ||
+  !bottomTextInput ||
+  !fontFamilySelect ||
+  !textColorInput ||
+  !strokeColorInput ||
+  !strokeWidthInput ||
+  !canvas
+) {
+  throw new Error('Rendering controls not found');
+}
+
+const context = canvas.getContext('2d');
+
+if (!context) {
+  throw new Error('Canvas 2D context not found');
+}
+
+const render = (): void => {
+  drawStamp(context, canvas, {
+    topText: topTextInput.value,
+    dateText: dateInput.value,
+    bottomText: bottomTextInput.value,
+    fontFamily: fontFamilySelect.value as FontFamily,
+    textColor: textColorInput.value,
+    strokeColor: strokeColorInput.value,
+    strokeWidth: Number(strokeWidthInput.value),
+  });
+};
+
+const renderTargets: Array<HTMLInputElement | HTMLSelectElement> = [
+  topTextInput,
+  dateInput,
+  bottomTextInput,
+  fontFamilySelect,
+  textColorInput,
+  strokeColorInput,
+  strokeWidthInput,
+];
+
+for (const target of renderTargets) {
+  target.addEventListener('input', render);
+  target.addEventListener('change', render);
+}
+
+render();
