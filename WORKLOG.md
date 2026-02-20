@@ -12,3 +12,11 @@
     - `cat SPEC.md`（仕様参照）
     - `cat TASKS.md`（タスク定義確認）
     - `git status --short`（変更確認）
+
+- 2026-02-20 | Task: T-001 SPA骨組みとTailwindベースの単一画面UI構築
+  - 概要: `index.html` / `src/main.ts` / `src/styles.css` を中心にVite+Tailwind基盤を構築し、仕様4.1/4.2に対応する入力フォーム・プレビュー（`reference-layout.svg`採用）・履歴欄・ダウンロード操作を単一画面へ実装。`TESTS.md` を新規作成して回帰テストケースを記録。
+  - 確認コマンド:
+    - `npm run build`（成功）
+    - `npm run lint`（成功）
+    - `git status --short`
+

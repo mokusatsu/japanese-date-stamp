@@ -30,7 +30,7 @@
   - SPEC.md をもとに実装バックログ（T-001〜T-007）を新規作成した。
 
 ## T-001: SPA骨組みとTailwindベースの単一画面UI構築
-- status: todo
+- status: done
 - priority: high
 - depends_on: []
 - scope:
@@ -55,7 +55,9 @@
 - definition_of_done:
   - UI骨組みが構築され、以降の描画・出力機能を接続できる状態である。
 - notes:
-  - 
+  - Vite + Tailwind のSPA骨組みを構築し、仕様4.1/4.2の入力要素・プレビュー・履歴・ダウンロード操作を単一画面へ配置。
+  - `reference-layout.svg` をプレビュー領域に組み込み、後続タスクでCanvas描画接続しやすい構成へ整理。
+  - checks実行結果: `npm run build` 成功 / `npm run lint` 成功。
 
 ## T-002: Canvas印影レンダリングエンジン実装
 - status: todo
