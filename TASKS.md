@@ -436,3 +436,34 @@
 - notes:
   - `resolveFontFamily` の戻り値を `font-family` 属性へ埋め込む際に属性値エスケープを適用し、二重引用符が重複する不正形式を解消。
   - `font-family` の属性値に `&quot;` が含まれることを確認するテストを追加して再発防止。
+
+## T-012: deploy成果物の再生成（再デプロイ）
+- status: done
+- priority: medium
+- depends_on: []
+- scope:
+  - deploy/index.html
+  - deploy/assets/*
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 3.1 アーキテクチャ
+  - SPEC.md 7.14
+- goal: 最新ソースから本番成果物を再生成し、`deploy/` 配下を再デプロイ状態に更新する。
+- steps:
+  1. `npm ci` で依存関係を再インストールする。
+  2. `npm run build` で `dist/` を生成する。
+  3. `deploy/` を最新成果物で同期し、生成ファイルを確認する。
+- acceptance_criteria:
+  - `npm run build` が成功する。
+  - `deploy/index.html` と `deploy/assets/*` が最新ビルド成果物に更新されている。
+- checks:
+  - `npm ci`（成功）
+  - `npm run build`（成功）
+  - `find deploy -mindepth 1 -delete && cp -R dist/. deploy/ && find deploy -maxdepth 3 -type f | sort`（成功）
+- definition_of_done:
+  - 再デプロイ手順を実行し、`deploy/` に最新成果物が配置されている。
+  - WORKLOG.md に作業記録が追記されている。
+- notes:
+  - ユーザー依頼「デプロイし直してください」に対応し、`deploy/` を `dist/` から再同期した。
+

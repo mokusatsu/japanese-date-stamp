@@ -123,3 +123,11 @@
     - `npm run test -- exportSvg`（成功）
     - `npm run build`（成功）
     - `git status --short`
+
+- 2026-02-20 | Task: T-012 deploy成果物の再生成（再デプロイ）
+  - 概要: ユーザー依頼に基づき `npm ci` と `npm run build` を実行し、`deploy/` を `dist/` で再同期して再デプロイ成果物を更新。
+  - 確認コマンド:
+    - `npm ci`（成功）
+    - `npm run build`（成功）
+    - `find deploy -mindepth 1 -delete && cp -R dist/. deploy/ && find deploy -maxdepth 3 -type f | sort`（成功）
+
