@@ -52,8 +52,7 @@ describe('createStampSvg', () => {
       textScale: 1,
     });
 
-    expect(svg).toContain("font-family='\"Noto Serif JP\", \"Hiragino Mincho ProN\", \"Yu Mincho\", serif'");
-    expect(svg).not.toContain('font-family=""');
+    expect(svg).toContain('font-family="&quot;Noto Serif JP&quot;, &quot;Hiragino Mincho ProN&quot;, &quot;Yu Mincho&quot;, serif"');
   });
 });
 

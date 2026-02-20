@@ -27,12 +27,7 @@ const escapeXmlText = (value: string): string =>
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&apos;');
 
-const escapeXmlAttributeSingleQuoted = (value: string): string =>
-  value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll("'", "&apos;");
+const escapeXmlAttribute = (value: string): string => escapeXmlText(value);
 
 const estimateTextWidth = (text: string, fontSize: number): number => {
   let width = 0;
@@ -75,7 +70,7 @@ export const createStampSvg = (options: Omit<SvgExportOptions, 'fileName' | 'tri
   const textScale = clampTextScale(options.textScale);
   const scale = options.size / 300;
   const maxTextWidth = layout.lineEndX - layout.lineStartX - 12 * scale;
-  const fontFamily = escapeXmlAttributeSingleQuoted(resolveFontFamily(options.fontFamily));
+  const fontFamily = escapeXmlAttribute(resolveFontFamily(options.fontFamily));
 
   const topBottomBase = BASE_TOP_BOTTOM_FONT_SIZE * scale * textScale;
   const dateBase = BASE_DATE_FONT_SIZE * scale * textScale;
