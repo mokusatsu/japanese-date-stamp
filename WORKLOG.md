@@ -131,3 +131,11 @@
     - `npm run build`（成功）
     - `find deploy -mindepth 1 -delete && cp -R dist/. deploy/ && find deploy -maxdepth 3 -type f | sort`（成功）
 
+
+- 2026-02-21 | Task: T-013 GitHub Pages公開先をdocs/へ切替えて再デプロイ
+  - 概要: `DEPLOY.md` のデプロイ先を `docs/` へ更新し、`README.md` にデプロイ節を追加。`npm run build` 後に `dist/` を `docs/` へ同期し、`manual-test.md` を保持したまま再デプロイ成果物（`docs/index.html`, `docs/assets/*`）を更新。
+  - 確認コマンド:
+    - `npm run build`（成功）
+    - `find docs -mindepth 1 ! -name 'manual-test.md' -delete && cp -R dist/. docs/ && find docs -maxdepth 3 -type f | sort`（成功）
+    - `cat DEPLOY.md`（成功）
+    - `git status --short`

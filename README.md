@@ -22,6 +22,10 @@ npm ci
 npm run dev
 ```
 
+## デプロイ
+GitHub Pages 用の配信成果物は `docs/` に配置します。
+再生成手順は `DEPLOY.md` を参照してください。
+
 ## 検証コマンド
 ```bash
 npm run test

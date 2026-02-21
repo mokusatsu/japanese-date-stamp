@@ -467,3 +467,39 @@
 - notes:
   - ユーザー依頼「デプロイし直してください」に対応し、`deploy/` を `dist/` から再同期した。
 
+
+## T-013: GitHub Pages公開先をdocs/へ切替えて再デプロイ
+- status: done
+- priority: high
+- depends_on:
+  - T-012
+- scope:
+  - DEPLOY.md
+  - README.md
+  - docs/index.html
+  - docs/assets/*
+  - TASKS.md
+  - WORKLOG.md
+- spec_refs:
+  - SPEC.md 3.1 アーキテクチャ
+  - SPEC.md 7.14
+- goal: GitHub Pages公開用の成果物出力先を `deploy/` から `docs/` に切り替え、手順書・関連ドキュメント・生成物を整合させる。
+- steps:
+  1. `DEPLOY.md` の成果物配置先を `docs/` 前提に更新する。
+  2. `README.md` に `docs/` 運用の案内を追加する。
+  3. `npm run build` 後、`dist/` を `docs/` へ同期して再デプロイ成果物を更新する。
+- acceptance_criteria:
+  - `DEPLOY.md` に `docs/` への配置手順と確認コマンドが記載されている。
+  - `README.md` に配信成果物が `docs/` である旨が明記されている。
+  - `docs/index.html` と `docs/assets/*` が最新ビルド成果物へ更新されている。
+- checks:
+  - `npm run build`（成功）
+  - `find docs -mindepth 1 ! -name 'manual-test.md' -delete && cp -R dist/. docs/ && find docs -maxdepth 3 -type f | sort`（成功）
+  - `cat DEPLOY.md`（成功）
+- definition_of_done:
+  - GitHub Pages公開運用が `docs/` ベースに統一され、再現可能な再デプロイ手順が文書化されている。
+  - TASKS.md / WORKLOG.md に実施内容と確認結果が追記されている。
+- notes:
+  - `DEPLOY.md` のコピー先・確認コマンド・運用説明を `docs/` 前提へ全面更新した。
+  - `README.md` にデプロイ節を追加し、配信成果物の配置先を `docs/` と明記した。
+  - `npm run build` 後に `dist/` を `docs/` へ同期し、`manual-test.md` を保持したまま再デプロイ成果物を更新した。
